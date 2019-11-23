@@ -14,4 +14,11 @@ class User < ApplicationRecord
   validates :email, :uniqueness => { :case_sensitive => false }
   validates :email, :presence => true
   has_secure_password
+  validates :phone_number, :presence => true
+
+  has_many(:flights, {:dependent => :destroy})
+
+  #def flights
+  #  return Flight.where({:user_id => self.id})
+  #end 
 end
