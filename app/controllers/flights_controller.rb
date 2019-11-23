@@ -1,6 +1,7 @@
 class FlightsController < ApplicationController
   def index
-    @flights = Flight.all.order({ :created_at => :desc })
+    #@flights = Flight.where({:user_id => session.fetch(:user_id)}).all.order({ :created_at => :desc })
+    @flights = @current_user.flights.order({ :created_at => :desc })
 
     render({ :template => "flights/index.html.erb" })
   end
@@ -16,7 +17,7 @@ class FlightsController < ApplicationController
     @flight = Flight.new
     @flight.description = params.fetch("description_from_query")
     @flight.departs_at = params.fetch("departs_at_from_query")
-    @flight.user_id = params.fetch("user_id_from_query")
+    @flight.user_id = session[:user_id]
     @flight.fifteen_minute_reminder_sent = params.fetch("fifteen_minute_reminder_sent_from_query", false)
     @flight.five_minute_reminder_sent = params.fetch("five_minute_reminder_sent_from_query", false)
 
